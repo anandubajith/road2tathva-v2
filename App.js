@@ -1,14 +1,39 @@
 import React, {Component} from 'react';
 import { StyleSheet, Text, TextInput, Button,ImageBackground,View,Image,Alert } from 'react-native';
-import bg1 from './assets/bg1.jpeg';
-import bg2 from './assets/bg2.jpeg';
-import CountDown from 'react-native-countdown-component';
-import { AsyncStorage } from 'react-native';
+import ImageSlider from 'react-native-image-slider';
 
+import bgfirst from './assets/bgfirst.jpeg';
+import openbg from './assets/openbg.jpeg'
+import round2bg from './assets/round2bg.jpeg';
+import { AsyncStorage } from 'react-native';
+import CountDown from 'react-native-countdown-component';
+import question_image_albatross from './assets/question_image_albatross.jpg';
+import qprespective from './assets/qprespective.jpeg';
+import contact_image from './assets/final_contact.png';
+import qtux from './assets/qtux.jpeg';
+import omkv from './assets/omkv.jpeg';
+import passcode_bg from './assets/passcode_bg.jpeg';
+import karma from './assets/karma.jpeg';
+// ROUND 1
+import albatross from './assets/posters/albatross.jpg'; 
+import motoart from './assets/posters/motoart.jpg';
+import perspective from './assets/posters/perspective.jpg';
+import tuxofwar from './assets/posters/tuxofwar.jpg';
+import srishti from './assets/posters/srishti.jpg';
+import youngengineer from './assets/posters/youngengineer.jpeg';
+// ROUND 2
+import rajpath from './assets/posters/rajpath.jpg';
+import bbcourt from './assets/posters/bbcourt.jpeg';
+import oat from './assets/posters/oat.jpeg';
+import abc from './assets/posters/abc.jpeg';
+import audi from './assets/posters/audi.png';
+import cc from './assets/posters/cc.jpeg';
+import cz from './assets/posters/cz.jpeg';
+import atmcircle from './assets/posters/atmcircle.jpg'
+import pits from './assets/posters/pits.png';
+// Last question fix progressCode
+// TODO: style enhancements
 // TODO: shuffle questions
-// TODO: admin code for round2 questions
-// TODO: fix endscreen bug
-// TODO: make all images local
 
 class Question extends Component {
     constructor(props) {
@@ -16,7 +41,8 @@ class Question extends Component {
         this.state = {
             input:'',
             correct: false,
-            timer: 0
+            timer: 0,
+            wrongAnswerCount: 0
         }
         this.answered = this.answered.bind(this);
         this.progress = this.progress.bind(this);
@@ -35,17 +61,24 @@ class Question extends Component {
         if ( answer.toLowerCase() == this.props.answer ) {
             this.setState({correct:true,timer:0});
             await AsyncStorage.setItem("timer", '0');
-        } else {
-            // shake the input box
-            // turn red
-            // start timer
-            this.setState({timer:90});
-            await AsyncStorage.setItem("timer", '90');
+        } else { 
+            if ( this.state.wrongAnswerCount > 1 ) {
+                this.setState({timer:90});
+                await AsyncStorage.setItem("timer", '90');
+            } else {
+                // shake the input box
+                // turn red
+                Alert.alert("Wrong Answer");
+                let wrongAnswerCount = this.state.wrongAnswerCount+1;
+                this.setState({
+                    wrongAnswerCount
+                })
+            }
         }   
     }
     progress() {
         this.setState({correct:false, input:''})
-        this.props.progress(this.props.id);
+        this.props.progress(this.props.id, this.props.passcode);
     }
     async clearTimer() {
         this.setState({timer:0});
@@ -55,6 +88,12 @@ class Question extends Component {
         if ( !this.state.correct) {
             return (
                 <View style = { styles.container } >
+                    {
+                        this.props.qimg && 
+                        <Image source={this.props.qimg}
+                               style={{ width: 400, height: 250 }}
+                        />
+                    }
                     <Text style={styles.questionText}>
                         { this.props.text }
                     </Text> 
@@ -86,7 +125,7 @@ class Question extends Component {
         } else {
             return (
                 <View style= { styles.container }>
-                    <Image source={{uri: this.props.image}}
+                    <Image source={this.props.image}
                            resizeMode={'contain'}
                            style={{ width: '100%', height: '80%' }}
                     />
@@ -108,37 +147,105 @@ export default class App extends Component {
         this.progress = this.progress.bind(this);
         this.checkPasscode = this.checkPasscode.bind(this);
         this.goToQ = this.goToQ.bind(this);
+        this.checkProgressCode = this.checkProgressCode.bind(this);
         this.state = {
             questions: [
                 {
-                    text: "Showcase your skills in capturing delicious sunshine, refreshing rain or bracing winds",
-                    answer: "banana",
-                    image: "https://firebasestorage.googleapis.com/v0/b/tathva-campus-ambassador.appspot.com/o/events%2F1568722665044-IMG-20190916-WA0142.jpg?alt=media&token=99d3b613-9db7-40db-990f-88bb66789344",
-                },
-                {
-                    text: "Monitie money money hoe chinka chinka chingka-flow",
+                    text: "",
                     answer: "albatross",
-                    image: "https://firebasestorage.googleapis.com/v0/b/tathva-campus-ambassador.appspot.com/o/events%2F1569661795747-IMG-20190928-WA0032.jpg?alt=media&token=245ef914-abc6-49f2-bbef-5f3b9e4b9b56",
+                    passcode: '',
+                    qimg: question_image_albatross,
+                    image: albatross
                 },
                 {
-                    text: "Question 3",
-                    answer: "answer",
-                    image: "https://firebasestorage.googleapis.com/v0/b/tathva-campus-ambassador.appspot.com/o/events%2F1569661795747-IMG-20190928-WA0032.jpg?alt=media&token=245ef914-abc6-49f2-bbef-5f3b9e4b9b56",
+                    text: "Moves when a moment is applied by torque",
+                    answer: "motoart",
+                    passcode:'',
+                    image: motoart
                 },
                 {
-                    text: "Question 4",
-                    answer: "answer",
-                    passcode:'iii',
-                    image: "https://firebasestorage.googleapis.com/v0/b/tathva-campus-ambassador.appspot.com/o/events%2F1569661795747-IMG-20190928-WA0032.jpg?alt=media&token=245ef914-abc6-49f2-bbef-5f3b9e4b9b56",
+                    text: "Blue marble",
+                    answer: "srishti",
+                    passcode: '',
+                    image: srishti
                 },
                 {
-                    text:'🔥Question5',
-                    answer:'answer',
-                    passcode:'idk',
-                    image:'https://avatars1.githubusercontent.com/u/3852827?s=400&u=2b00ddc814e649ad25ac46f4d7f19db77ffd665d&v=4'
+                    text: "It's how you look",
+                    qimg: qprespective,
+                    answer: "perspective",
+                    passcode: '',
+                    image: perspective
+                },
+                {
+                    text: "A cheap satin may kick you out of the race",
+                    qimg:qtux,
+                    answer: "tuxofwar",
+                    passcode: '',
+                    image: tuxofwar
+                },
+                {
+                    text: "Age is not a barrier for ideas",
+                    answer: "youngengineer",
+                    passcode: '',
+                    image: youngengineer
+                },
+                {
+                    text: "Pic of any unnoticed writings on walls will be shown",
+                    answer:"creativezone",
+                    passcode: 'yes',
+                    image: cz
+                },
+                {
+                    text:'28.6x15.2',
+                    answer:'basketballcourt',
+                    passcode:'yes',
+                    image: bbcourt
+                },
+                {
+                    text: '1000001\n1000010\n1000011',
+                    answer:'abc',
+                    passcode:'yes',
+                    image: abc
+                },
+                {
+                    text:'Dungeons of NIT-C',
+                    answer:'elhcpits',
+                    passcode:'yes',
+                    image: pits,
+                },
+                {
+                    text: '2 times 22/7 Ris only information you need, Remember you won\'t get any 💰 here',
+                    answer: 'centrecircle',
+                    passcode:'yes',
+                    image: cc
+                },
+                {
+                    text:'When out of BUCKS it SUCKS',
+                    answer:'atmcircle',
+                    passcode:'yes',
+                    image:atmcircle
+                },
+                {
+                    text:'If your dad is rich you can afford it...With one ring change more you can be at the olympics',
+                    answer:'audi',
+                    passcode:'yes',
+                    image:audi
+                },
+                {
+                    text:'My mom thinks eating this can reduce her cholestrol, But she dislike \'S\' and keeps it out of plate',
+                    answer:'oat',
+                    passcode: 'yes',
+                    image: oat
+                },
+                {
+                    text:'Did you get your placements?',
+                    answer: 'rajpath',
+                    passcode: 'yes',
+                    image: rajpath
                 }
             ],
             answered: [],
+            progressCode:'',
             currentQuestion: -2,
         }   
 
@@ -154,21 +261,26 @@ export default class App extends Component {
           currentQuestion
         });
       } 
-    async progress(q_id){
+    async progress(q_id, passcode){
         let answered = this.state.answered;
         answered.push(q_id);
-        this.setState({
-            currentQuestion: -1,
-            passcode:'',
-            answered
-        });
         await AsyncStorage.setItem("answered",JSON.stringify(answered));
-        await AsyncStorage.setItem("currentQuestion", '-1');
-        // set currentQuestion as -3 to get passcode,
-        // then go to -1
+        if ( passcode === '' ) {
+            this.setState({
+                currentQuestion: -1,
+                answered
+            });
+            await AsyncStorage.setItem("currentQuestion", '-1');
+        } else {
+            this.setState({
+                currentQuestion: -3,
+                answered
+            });
+            await AsyncStorage.setItem("currentQuestion", '-3');
+        }
     }
     async checkPasscode(){
-        if ( this.state.passcode === "Powlitathva") {
+        if ( this.state.passcode === "powlitathva") {
             this.setState({currentQuestion:-1}); 
             await AsyncStorage.setItem("currentQuestion", '-1');   
         }
@@ -177,17 +289,35 @@ export default class App extends Component {
         this.setState({currentQuestion:q});
         await AsyncStorage.setItem("currentQuestion", q.toString());
     }
+    async checkProgressCode() {
+        let code = '';
+        code += this.state.answered.length;
+        code += this.state.answered.length-1;
+        code += (this.state.answered.length%2)? '0': '1';
+        if ( this.state.progressCode == code ) {
+            this.setState({currentQuestion:-1,progressCode:''}); 
+            await AsyncStorage.setItem("currentQuestion", '-1');   
+        }
+    }
     render() {
-        // this should decide which round2
-        // based on answered.length , if greater than 5, use set2   
-        // FIx get to endscreen bug
+        if ( this.state.answered.length >= 14) {
+            return (
+                <View style= { styles.welcome }>
+                    <ImageSlider images={[
+                        karma,
+                        contact_image,
+                      ]}/>
+                </View>
+            );
+        }
+
         let buttons = [],start, end;
-        if ( this.state.answered.length > 2 ) {
-            start = 3;
+        if ( this.state.answered.length >= 5) {
+            start = 6;
             end = this.state.questions.length
         } else {
             start = 0;
-            end = 2;
+            end = 6;
         }
         for (let i = start; i < end; i++) {
             let j  = i;
@@ -201,19 +331,25 @@ export default class App extends Component {
        
         if ( this.state.currentQuestion == -3) {
             return (
-                <View stage={styles.welcome}>
-                    <Text style={styles.questions}>
-                    Ask passcode
-                    </Text>
-                </View>
+                <ImageBackground source={passcode_bg} style={styles.welcomeBG}>
+                    <TextInput
+                        style={styles.passCodeInput}
+                        secureTextEntry={true}
+                        placeholder={"Passcode "+this.state.answered.length}
+                        keyboardType="numeric"
+                        onChangeText={(progressCode) => this.setState({progressCode})}
+                        value={this.state.progressCode}
+                    />
+                    <Button
+                      title="Submit"
+                      onPress={() => this.checkProgressCode()}
+                    />
+                </ImageBackground>
             );
         } else if ( this.state.currentQuestion == -2) {
             return (
-                <View style={styles.welcome}>
-             {/*   <Video  
-                    source={Intro}                          
-                    style={styles.backgroundVideo}
-                />*/}
+                // <View style={styles.welcome}>
+                <ImageBackground source={openbg} style={styles.welcomeBG}>
                     <Text style = {styles.questionText}>
                     Adventure Club NIT-C 
                     </Text>
@@ -228,43 +364,47 @@ export default class App extends Component {
                       title="Begin"
                       onPress={() => this.checkPasscode()}
                     />
-                </View>
+                </ImageBackground>
+                // </View>
             );
         } else if ( this.state.currentQuestion == -1 ){
+            let round_no = 1;
+            if (this.state.answered.length >= 5)
+                round_no = 2;
+            let round_header;
+            if ( this.state.answered.length >= 5) {
+                round_header = (
+                    <Image source={omkv} resizeMode="contain" style={{width:400, height:300}}/>
+                );
+            } else {
+                round_header = (
+                    <Text style={ styles.questionText}>
+                        Round 1
+                    </Text>
+                );
+            }
              return (
                 <View style={styles.welcome} >
-                    <Text style={ styles.questionText}>
-                    Round 1
-                    </Text>
+                    { round_header }
                     { buttons }
-
                 </View>
             );
-        } else  if ( this.state.answered.length < 4) {
+        } else  {
             let current = this.state.questions[this.state.currentQuestion];
             return ( 
-                <ImageBackground source={this.state.currentQuestion % 2? bg1:bg2} style={{width: '100%', height: '100%'}}>
+                <ImageBackground source={this.state.answered.length < 5 ? bgfirst: round2bg} style={{width: '100%', height: '100%'}}>
                 <Question
                     text={current.text}
+                    qimg={current.qimg}
                     id={this.state.currentQuestion}
                     answer={current.answer}
+                    passcode={current.passcode}
                     image={current.image}
                     progress={this.progress}
                 />
                 </ImageBackground>
             );
-        } else {
-            return (
-                <View style= { styles.container }>
-                    <Text style={styles.questionText}>
-                        Questions over
-                    </Text> 
-                     <Text style={styles.questionText}>
-                        Display PHone numbers here
-                    </Text> 
-                </View>
-            );
-        }
+        } 
     }
 }
 
@@ -280,10 +420,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    welcomeBG: {
+        width: '100%',
+        height: '100%',
+        flex:1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     questionText: {
         textAlign: 'center',
         fontSize: 35,
-        color:'#fff'
+        color:'#fff',
+        backgroundColor: '#000'
     },
     danger: {
         fontSize: 30,
@@ -304,6 +452,7 @@ const styles = StyleSheet.create({
     },
     passCodeInput: {
         fontSize: 40,
+        width:225,
         marginBottom: 20,
     },
     backgroundVideo: {
