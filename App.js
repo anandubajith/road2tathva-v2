@@ -1,24 +1,34 @@
-import React, {Component} from 'react';
-import { StyleSheet, Text, TextInput, Button,TouchableOpacity,ImageBackground,View,Image,Alert } from 'react-native';
+import React, { Component } from 'react';
+import { 
+        StyleSheet,
+        Text,
+        TextInput,
+        Button,
+        TouchableOpacity,
+        ImageBackground,
+        View,
+        Image,
+        Alert,
+        AsyncStorage
+       } from 'react-native';
 import ImageSlider from 'react-native-image-slider';
 import * as Font from 'expo-font';
+import CountDown from 'react-native-countdown-component';
+
 
 import bgfirst from './assets/bgfirst.jpeg';
-import openbg from './assets/openbg.jpeg'
-import round2bg from './assets/round2bg.jpeg';
-import { AsyncStorage } from 'react-native';
-import CountDown from 'react-native-countdown-component';
-import question_image_albatross from './assets/question_image_albatross.jpg';
-import qprespective from './assets/qprespective.jpeg';
-import contact_image from './assets/final_contact.png';
-import qtux from './assets/qtux.jpeg';
-import omkv from './assets/omkv.jpeg';
 import passcode_bg from './assets/passcode_bg.jpeg';
+import round2bg from './assets/round2bg.jpeg';
+import omkv from './assets/omkv.jpeg';
 import karma from './assets/karma.jpeg';
+import contact_image from './assets/final_contact.png';
 // ROUND 1
+import question_image_albatross from './assets/question_image_albatross.jpg';
 import albatross from './assets/posters/albatross.jpg'; 
 import motoart from './assets/posters/motoart.jpg';
+import qprespective from './assets/qprespective.jpeg';
 import perspective from './assets/posters/perspective.jpg';
+import qtux from './assets/qtux.jpeg';
 import tuxofwar from './assets/posters/tuxofwar.jpg';
 import srishti from './assets/posters/srishti.jpg';
 import youngengineer from './assets/posters/youngengineer.jpeg';
@@ -33,7 +43,6 @@ import cz from './assets/posters/cz.jpeg';
 import atmcircle from './assets/posters/atmcircle.jpg'
 import pits from './assets/posters/pits.png';
 
-// TODO: shuffle questions
 // TODO: app size maybe
 
 class Question extends Component {
@@ -51,7 +60,7 @@ class Question extends Component {
     async componentDidMount() {
         // read timer and set it
         let storedTimer = await AsyncStorage.getItem("timer");
-        console.log("Has timer: ", storedTimer);
+        // console.log("Has timer: ", storedTimer);
         let timer = storedTimer ? parseInt(storedTimer, 10) : 0;
         this.setState({
             timer
@@ -67,8 +76,6 @@ class Question extends Component {
                 this.setState({timer:90});
                 await AsyncStorage.setItem("timer", '90');
             } else {
-                // shake the input box
-                // turn red
                 Alert.alert("Wrong Answer");
                 let wrongAnswerCount = this.state.wrongAnswerCount+1;
                 this.setState({
@@ -95,7 +102,7 @@ class Question extends Component {
                                style={{ width: 400, height: 250 }}
                         />
                     }
-                    <Text style={styles.questionText}>
+                    <Text style={[styles.questionText, this.state.timer > 0 ? {marginBottom:20}: {} ]}>
                         { this.props.text }
                     </Text> 
                      {
@@ -328,12 +335,6 @@ export default class App extends Component {
         }
         for (let i = start; i < end; i++) {
             let j  = i;
-            // buttons.push(
-            //     <Button title={(j+1).toString()} 
-            //             disabled={}
-            //             onPress={() => this.goToQ(i) }key={j}>
-            //     </Button>
-            // );
             buttons.push(
                 <TouchableOpacity  onPress={() => this.goToQ(i) } key={j} underlayColor="white">
                   <View style={[styles.button, this.state.answered.includes(i) ? styles.buttonDisabled : styles.buttonActive]}>
@@ -510,16 +511,16 @@ const styles = StyleSheet.create({
       height: 100,
       alignItems: 'center',
       justifyContent:'center',
+      borderColor: '#ffee00',
+      borderStyle:'solid',
+      borderWidth: 2,
     },
     buttonDisabled: {
       backgroundColor: '#eee',
-      width: 100,
-      height: 100,
+      borderColor: '#ddd',
     },
     buttonActive: {
       backgroundColor: 'yellow',
-      width: 100,
-      height: 100,
     },
     buttonText: {
       textAlign: 'center',
