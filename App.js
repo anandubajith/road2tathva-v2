@@ -222,19 +222,19 @@ export default class App extends Component {
                     image: pits,
                 },
                 {
-                    text: '2 times 22/7 Ris only information you need, Remember you won\'t get any 💰 here',
+                    text: 'The olympians once went out in search of money. On the way they met four others.But they came back empty handed',
                     answer: 'centrecircle',
                     passcode:'yes',
                     image: cc
                 },
                 {
-                    text:'When out of BUCKS it SUCKS',
+                    text:'####',
                     answer:'atmcircle',
                     passcode:'yes',
                     image:atmcircle
                 },
                 {
-                    text:'If your dad is rich you can afford it...With one ring change more you can be at the olympics',
+                    text:'Since 1910',
                     answer:'audi',
                     passcode:'yes',
                     image:audi
@@ -246,7 +246,7 @@ export default class App extends Component {
                     image: oat
                 },
                 {
-                    text:'Did you get your placements?',
+                    text:'NRMGLMVGGV',
                     answer: 'rajpath',
                     passcode: 'yes',
                     image: rajpath
