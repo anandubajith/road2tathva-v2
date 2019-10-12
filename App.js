@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, TextInput, Button,ImageBackground,View,Image,Alert } from 'react-native';
+import { StyleSheet, Text, TextInput, Button,TouchableOpacity,ImageBackground,View,Image,Alert } from 'react-native';
 import ImageSlider from 'react-native-image-slider';
+import * as Font from 'expo-font';
 
 import bgfirst from './assets/bgfirst.jpeg';
 import openbg from './assets/openbg.jpeg'
@@ -31,9 +32,9 @@ import cc from './assets/posters/cc.jpeg';
 import cz from './assets/posters/cz.jpeg';
 import atmcircle from './assets/posters/atmcircle.jpg'
 import pits from './assets/posters/pits.png';
-// Last question fix progressCode
-// TODO: style enhancements
+
 // TODO: shuffle questions
+// TODO: app size maybe
 
 class Question extends Component {
     constructor(props) {
@@ -260,6 +261,10 @@ export default class App extends Component {
           answered,
           currentQuestion
         });
+        await Font.loadAsync({
+          'headliner': require('./assets/fonts/headliner.ttf'),
+        });
+        this.setState({ fontLoaded: true });
       } 
     async progress(q_id, passcode){
         let answered = this.state.answered;
@@ -286,6 +291,8 @@ export default class App extends Component {
         }
     }
     async goToQ(q){
+        if ( this.state.answered.includes(q) )
+            return;
         this.setState({currentQuestion:q});
         await AsyncStorage.setItem("currentQuestion", q.toString());
     }
@@ -321,11 +328,18 @@ export default class App extends Component {
         }
         for (let i = start; i < end; i++) {
             let j  = i;
+            // buttons.push(
+            //     <Button title={(j+1).toString()} 
+            //             disabled={}
+            //             onPress={() => this.goToQ(i) }key={j}>
+            //     </Button>
+            // );
             buttons.push(
-                <Button title={(j+1).toString()} 
-                        disabled={this.state.answered.includes(i)}
-                        onPress={() => this.goToQ(i) }key={j}>
-                </Button>
+                <TouchableOpacity  onPress={() => this.goToQ(i) } key={j} underlayColor="white">
+                  <View style={[styles.button, this.state.answered.includes(i) ? styles.buttonDisabled : styles.buttonActive]}>
+                    <Text style={styles.buttonText}>{(j+1).toString()}</Text>
+                  </View>
+                  </TouchableOpacity>
             );
         }
        
@@ -348,24 +362,29 @@ export default class App extends Component {
             );
         } else if ( this.state.currentQuestion == -2) {
             return (
-                // <View style={styles.welcome}>
-                <ImageBackground source={openbg} style={styles.welcomeBG}>
-                    <Text style = {styles.questionText}>
-                    Adventure Club NIT-C 
-                    </Text>
+                <View style={styles.welcome}>
+                    { 
+                    this.state.fontLoaded ?
+                        (
+                            <Text style = {styles.introHeader}>
+                                Adventure Club NITC 
+                            </Text>
+                        ) : null
+                    }
+                    
                     <TextInput
-                        style={styles.passCodeInput}
+                        style={styles.introPassCodeInput}
                         secureTextEntry={true}
-                        placeholder="road2tathva"
+                        placeholder="ROAD TO TATHVA"
                         onChangeText={(passcode) => this.setState({passcode})}
                         value={this.state.passcode}
                     />
+                   
                     <Button
                       title="Begin"
                       onPress={() => this.checkPasscode()}
                     />
-                </ImageBackground>
-                // </View>
+                </View>
             );
         } else if ( this.state.currentQuestion == -1 ){
             let round_no = 1;
@@ -386,7 +405,9 @@ export default class App extends Component {
              return (
                 <View style={styles.welcome} >
                     { round_header }
+                    <View style={styles.grid}>
                     { buttons }
+                    </View>
                 </View>
             );
         } else  {
@@ -416,7 +437,7 @@ const styles = StyleSheet.create({
     },
     welcome: {
         flex: 1,
-        backgroundColor: '#333',
+        backgroundColor: '#000',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -433,6 +454,23 @@ const styles = StyleSheet.create({
         color:'#fff',
         backgroundColor: '#000'
     },
+    intro: {
+        padding: 20,
+        backgroundColor:'blue',
+        fontWeight:'bold',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    introHeader: {
+        textAlign:'center',
+        fontFamily: "headliner",
+        fontSize: 50,
+        marginBottom: 20,
+        color: 'yellow',
+        textShadowColor: 'orange',
+        textShadowOffset: {width: -2, height: 2},
+        textShadowRadius: 10
+    },
     danger: {
         fontSize: 30,
         color: 'red'
@@ -447,19 +485,47 @@ const styles = StyleSheet.create({
         padding:10
     },
     submitButton: {
-        // marginTop: 40,
         padding:20,
+    },
+    grid: {
+        width:320,
+        flexWrap: 'wrap',
+        justifyContent:'space-around',
+        alignItems: 'center',
+        flexDirection:'row'
     },
     passCodeInput: {
         fontSize: 40,
         width:225,
         marginBottom: 20,
     },
-    backgroundVideo: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
-      },
+    introPassCodeInput: {
+        fontSize: 40,
+        width: 325,
+        marginBottom: 20,
+    },
+    button: {
+      marginTop: 30,
+      width: 100,
+      height: 100,
+      alignItems: 'center',
+      justifyContent:'center',
+    },
+    buttonDisabled: {
+      backgroundColor: '#eee',
+      width: 100,
+      height: 100,
+    },
+    buttonActive: {
+      backgroundColor: 'yellow',
+      width: 100,
+      height: 100,
+    },
+    buttonText: {
+      textAlign: 'center',
+      fontSize: 20,
+      padding: 20,
+      fontWeight:'bold',
+      color: '#000'
+    }
 });
