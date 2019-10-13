@@ -12,7 +12,6 @@ import {
         AsyncStorage
        } from 'react-native';
 import ImageSlider from 'react-native-image-slider';
-import * as Font from 'expo-font';
 import CountDown from 'react-native-countdown-component';
 
 
@@ -21,19 +20,19 @@ import passcode_bg from './assets/passcode_bg.jpeg';
 import round2bg from './assets/round2bg.jpeg';
 import omkv from './assets/omkv.jpeg';
 import karma from './assets/karma.jpeg';
-import contact_image from './assets/final_contact.png';
+import contact_image from './assets/finalcontact.jpeg';
 // ROUND 1
-import question_image_albatross from './assets/question_image_albatross.jpg';
-import albatross from './assets/posters/albatross.jpg'; 
-import motoart from './assets/posters/motoart.jpg';
-import qprespective from './assets/qprespective.jpeg';
-import perspective from './assets/posters/perspective.jpg';
+import aavishkar from './assets/posters/aavishkar.jpg'; 
+import wheels from './assets/posters/wheels.jpg';
+// import qprespective from './assets/qprespective.jpeg';
+import inking from './assets/posters/inking.jpg';
 import qtux from './assets/qtux.jpeg';
 import tuxofwar from './assets/posters/tuxofwar.jpg';
 import srishti from './assets/posters/srishti.jpg';
 import youngengineer from './assets/posters/youngengineer.jpeg';
 // ROUND 2
-import rajpath from './assets/posters/rajpath.jpg';
+import question_cz from './assets/question_cz.jpeg';
+import volleyballcourt from './assets/posters/volleyballcourt.jpg';
 import bbcourt from './assets/posters/bbcourt.jpeg';
 import oat from './assets/posters/oat.jpeg';
 import abc from './assets/posters/abc.jpeg';
@@ -43,7 +42,108 @@ import cz from './assets/posters/cz.jpeg';
 import atmcircle from './assets/posters/atmcircle.jpg'
 import pits from './assets/posters/pits.png';
 
-// TODO: app size maybe
+const QUESTIONS = [{
+                    text: "I am George Perkin Marsh, My 4th work may help you!",
+                    answer: "aavishkar",
+                    passcode: '',
+                    image: aavishkar 
+                },
+                {
+                    text: "Maelg,ztilg,ruomalg",
+                    answer: "wheels",
+                    passcode:'',
+                    image: wheels
+                },
+                {
+                    text: "It weighs about 5.972 x 10^24 kg",
+                    answer: "srishti",
+                    passcode: '',
+                    image: srishti
+                },
+                {
+                    text: "Hurting needle",
+                    answer: "inking",
+                    passcode: '',
+                    image: inking
+                },
+                {
+                    text: "A cheap satin may end you up in a CTE",
+                    qimg:qtux,
+                    answer: "tuxofwar",
+                    passcode: '',
+                    image: tuxofwar
+                },
+                {
+                    text: "Age is not a barrier for ideas",
+                    answer: "youngengineer",
+                    passcode: '',
+                    image: youngengineer
+                },
+                {
+                    qimg: question_cz,
+                    answer:"creativezone",
+                    passcode: 'yes',
+                    image: cz
+                },
+                {
+                    text:'28.6x15.2',
+                    answer:'basketballcourt',
+                    passcode:'yes',
+                    image: bbcourt
+                },
+                {
+                    text: '1000001\n1000010\n1000011',
+                    answer:'abc',
+                    passcode:'yes',
+                    image: abc
+                },
+                {
+                    text:'Dungeons of NIT-C',
+                    answer:'elhcpits',
+                    passcode:'yes',
+                    image: pits,
+                },
+                {
+                    text: 'The olympians once went out in search of money. On the way they met four others.But they came back empty handed',
+                    answer: 'centrecircle',
+                    passcode:'yes',
+                    image: cc
+                },
+                {
+                    text:'####',
+                    answer:'atmcircle',
+                    passcode:'yes',
+                    image:atmcircle
+                },
+                {
+                    text:'Since 1910',
+                    answer:'audi',
+                    passcode:'yes',
+                    image:audi
+                },
+                {
+                    text:'My mom thinks eating this can reduce her cholestrol, But she dislike \'S\' and keeps it out of plate',
+                    answer:'oat',
+                    passcode: 'yes',
+                    image: oat
+                },
+                {
+                    text:'NRMGLMVGGV',
+                    answer: 'volleyballcourt',
+                    passcode: 'yes',
+                    image: volleyballcourt
+                }];
+
+function shuffle(a) {
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+    return a;
+}
 
 class Question extends Component {
     constructor(props) {
@@ -157,101 +257,7 @@ export default class App extends Component {
         this.goToQ = this.goToQ.bind(this);
         this.checkProgressCode = this.checkProgressCode.bind(this);
         this.state = {
-            questions: [
-                {
-                    text: "",
-                    answer: "albatross",
-                    passcode: '',
-                    qimg: question_image_albatross,
-                    image: albatross
-                },
-                {
-                    text: "Moves when a moment is applied by torque",
-                    answer: "motoart",
-                    passcode:'',
-                    image: motoart
-                },
-                {
-                    text: "Blue marble",
-                    answer: "srishti",
-                    passcode: '',
-                    image: srishti
-                },
-                {
-                    text: "It's how you look",
-                    qimg: qprespective,
-                    answer: "perspective",
-                    passcode: '',
-                    image: perspective
-                },
-                {
-                    text: "A cheap satin may kick you out of the race",
-                    qimg:qtux,
-                    answer: "tuxofwar",
-                    passcode: '',
-                    image: tuxofwar
-                },
-                {
-                    text: "Age is not a barrier for ideas",
-                    answer: "youngengineer",
-                    passcode: '',
-                    image: youngengineer
-                },
-                {
-                    text: "Pic of any unnoticed writings on walls will be shown",
-                    answer:"creativezone",
-                    passcode: 'yes',
-                    image: cz
-                },
-                {
-                    text:'28.6x15.2',
-                    answer:'basketballcourt',
-                    passcode:'yes',
-                    image: bbcourt
-                },
-                {
-                    text: '1000001\n1000010\n1000011',
-                    answer:'abc',
-                    passcode:'yes',
-                    image: abc
-                },
-                {
-                    text:'Dungeons of NIT-C',
-                    answer:'elhcpits',
-                    passcode:'yes',
-                    image: pits,
-                },
-                {
-                    text: 'The olympians once went out in search of money. On the way they met four others.But they came back empty handed',
-                    answer: 'centrecircle',
-                    passcode:'yes',
-                    image: cc
-                },
-                {
-                    text:'####',
-                    answer:'atmcircle',
-                    passcode:'yes',
-                    image:atmcircle
-                },
-                {
-                    text:'Since 1910',
-                    answer:'audi',
-                    passcode:'yes',
-                    image:audi
-                },
-                {
-                    text:'My mom thinks eating this can reduce her cholestrol, But she dislike \'S\' and keeps it out of plate',
-                    answer:'oat',
-                    passcode: 'yes',
-                    image: oat
-                },
-                {
-                    text:'NRMGLMVGGV',
-                    answer: 'rajpath',
-                    passcode: 'yes',
-                    image: rajpath
-                }
-            ],
+            questions: [],
             answered: [],
             progressCode:'',
             currentQuestion: -2,
@@ -261,17 +267,25 @@ export default class App extends Component {
     async componentDidMount() {
         let storedValue = await AsyncStorage.getItem("answered");
         let storedCurrentQuestion = await AsyncStorage.getItem("currentQuestion");
-        console.log("Fetched data: ",storedValue,  storedCurrentQuestion);
+        let storedShuffledQuestions = await AsyncStorage.getItem("questions");
+        let questions;
+        if ( storedShuffledQuestions )
+            questions = JSON.parse(storedShuffledQuestions);
+        else {
+            let p1 = QUESTIONS.slice(0,6);
+            let p2 = QUESTIONS.slice(6);
+            shuffle(p1); shuffle(p2);
+            questions = p1.concat(p2);
+            await AsyncStorage.setItem("questions", JSON.stringify(questions));
+        }
+        // console.log("Fetched data: ",storedValue,  storedCurrentQuestion);
         let answered = storedValue ? JSON.parse(storedValue) : [];
         let currentQuestion = storedCurrentQuestion ? parseInt(storedCurrentQuestion, 10) : -2;
         this.setState({
-          answered,
-          currentQuestion
+            questions,
+            answered,
+            currentQuestion
         });
-        await Font.loadAsync({
-          'headliner': require('./assets/fonts/headliner.ttf'),
-        });
-        this.setState({ fontLoaded: true });
       } 
     async progress(q_id, passcode){
         let answered = this.state.answered;
@@ -305,9 +319,11 @@ export default class App extends Component {
     }
     async checkProgressCode() {
         let code = '';
+        code += '55';
         code += this.state.answered.length;
         code += this.state.answered.length-1;
         code += (this.state.answered.length%2)? '0': '1';
+        code += '55';
         if ( this.state.progressCode == code ) {
             this.setState({currentQuestion:-1,progressCode:''}); 
             await AsyncStorage.setItem("currentQuestion", '-1');   
@@ -364,19 +380,14 @@ export default class App extends Component {
         } else if ( this.state.currentQuestion == -2) {
             return (
                 <View style={styles.welcome}>
-                    { 
-                    this.state.fontLoaded ?
-                        (
-                            <Text style = {styles.introHeader}>
-                                Adventure Club NITC 
-                            </Text>
-                        ) : null
-                    }
-                    
+                    <Text style = {styles.introHeader}>
+                        Adventure Club NITC 
+                    </Text>                    
                     <TextInput
                         style={styles.introPassCodeInput}
                         secureTextEntry={true}
                         placeholder="ROAD TO TATHVA"
+                        placeholderTextColor="#ffffff"
                         onChangeText={(passcode) => this.setState({passcode})}
                         value={this.state.passcode}
                     />
@@ -497,7 +508,7 @@ const styles = StyleSheet.create({
     },
     passCodeInput: {
         fontSize: 40,
-        width:225,
+        width:270,
         marginBottom: 20,
     },
     introPassCodeInput: {
