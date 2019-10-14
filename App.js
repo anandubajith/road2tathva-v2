@@ -20,7 +20,7 @@ import passcode_bg from './assets/passcode_bg.jpeg';
 import round2bg from './assets/round2bg.jpeg';
 import omkv from './assets/omkv.jpeg';
 import karma from './assets/karma.jpeg';
-import contact_image from './assets/finalcontact.jpeg';
+import contact_image from './assets/contact.jpg';
 // ROUND 1
 import aavishkar from './assets/posters/aavishkar.jpg'; 
 import wheels from './assets/posters/wheels.jpg';
