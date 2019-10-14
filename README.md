@@ -1,5 +1,5 @@
 # road2tathva
-*Road2Tathva* Companion app built with React Native for [Adventure Club NIT-C](https://www.instagram.com/adventureclubnitc/) as a part of [Tathva'19](tathva.org)
+**Road2Tathva** Companion app built with *React Native* for [**Adventure Club NIT-C**](https://www.instagram.com/adventureclubnitc/) as a part of [Tathva'19](tathva.org)
 
 ## Screenshots
 | | | |
