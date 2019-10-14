@@ -1,7 +1,7 @@
 # road2tathva v2
 **Road2Tathva** Companion app built with *React Native* for [**Adventure Club NIT-C**](https://www.instagram.com/adventureclubnitc/) as a part of [Tathva'19](tathva.org)
 
-*This is a complete rebuild of the original* [road2tathva](https://github.com/falalurahman/Road-To-Tathva) *app*
+*This is a complete rewrite of the original* [road2tathva](https://github.com/falalurahman/Road-To-Tathva) *app*
 
 ## Screenshots
 | | | |
